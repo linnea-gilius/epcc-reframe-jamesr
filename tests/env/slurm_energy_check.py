@@ -135,8 +135,6 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
             # print(energy_counters[i + 1] - energy_counters[i])
             energy_counters_diff += energy_counters[i + 1] - energy_counters[i]
 
-        # print("energy counters diff: ", energy_counters_diff)
-
         diff = energy_counters_diff - int(str(energy_slurm[0]))
 
         # print("diff: ", diff)
