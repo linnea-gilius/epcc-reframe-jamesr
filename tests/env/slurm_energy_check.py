@@ -34,7 +34,6 @@ class SlurmEnergy1nodeTest(rfm.RunOnlyRegressionTest):
         """Extract energy from counters to compare with slurm and check diff is zero"""
         jobid = self.job.jobid
         slurm = rfm.utility.osext.run_command(
-        slurm = rfm.utility.osext.run_command(
             "sacct -j " + str(jobid) + " --format=JobID,ConsumedEnergy --noconvert | tr '\n' ' ' ",
             check=True,
             shell=True,
