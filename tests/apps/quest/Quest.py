@@ -49,7 +49,6 @@ class QuestQFTTest(rfm.RegressionTest):
         """Sanity check that simulation finished successfully"""
         return sn.assert_found("Total run time:", self.stdout)
 
-
 # @performance_function("seconds", perf_key="performance")
 # def extract_perf(self):
 #     """Extract performance value to compare with reference value"""
