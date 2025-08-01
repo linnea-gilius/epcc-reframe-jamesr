@@ -27,7 +27,7 @@ class SlurmEnergy1nodeTest(rfm.RunOnlyRegressionTest):
     @sanity_function
     def assert_finished(self):
         """Sanity check that SLURM_CPU_FREQ_REQ is set"""
-        return sn.assert_found(f"\S+ J \S+ us", self.stdout)
+        return sn.assert_found(r"\S+ J \S+ us", self.stdout)
 
     @performance_function("energy diff", perf_key="performance")
     def extract_perf(self):
@@ -41,7 +41,8 @@ class SlurmEnergy1nodeTest(rfm.RunOnlyRegressionTest):
         energy_counters = sn.extractall(r"(?P<energy>[0-9]+)\sJ\s(?P<time>[0-9]+)\sus", self.stdout, "energy")
 
         energy_slurm = sn.extractall_s(
-            r"JobID\s+ConsumedEnergy\s+------------ --------------\s+[0-9]+\s+[0-9]+\s+[0-9]+.bat\+\s+[0-9]+\s+[0-9]+.ext\+\s+[0-9]+\s+[0-9]+.0\s+(?P<energy>[0-9]+)",
+            r"JobID\s+ConsumedEnergy\s+------------ --------------\s+[0-9]+\s+[0-9]+\s+[0-9]+.bat\+\s+[0-9]+"
+            r"\s+[0-9]+.ext\+\s+[0-9]+\s+[0-9]+.0\s+(?P<energy>[0-9]+)",
             str(slurm.stdout),
             "energy",
         )
@@ -73,7 +74,7 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
     @sanity_function
     def assert_finished(self):
         """Sanity check that SLURM_CPU_FREQ_REQ is set"""
-        return sn.assert_found(f"", self.stdout)
+        return sn.assert_found("", self.stdout)
 
     @performance_function("energy diff", perf_key="performance")
     def extract_perf(self):
@@ -93,20 +94,20 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
 
         nodelist = list(nodelist_raw.stdout.split(","))
 
-
         energy_data = []
 
         energy_counters = []
 
-        for i, nodeid in enumerate(nodelist):
+        for _i, nodeid in enumerate(nodelist):
             energy_data.append(sn.extractall(r"(?P<energy>[0-9]+)\sJ\s(?P<time>[0-9]+)\sus", nodeid, "energy"))
 
-        for i, energy in enumerate(energy_data):
+        for _i, energy in enumerate(energy_data):
             energy_counters.append(int(str(energy[0])))
             energy_counters.append(int(str(energy[1])))
 
         energy_slurm = sn.extractall_s(
-            r"JobID\s+ConsumedEnergy\s+------------ --------------\s+[0-9]+\s+[0-9]+\s+[0-9]+.bat\+\s+[0-9]+\s+[0-9]+.ext\+\s+[0-9]+\s+[0-9]+.0\s+(?P<energy>[0-9]+)",
+            r"JobID\s+ConsumedEnergy\s+------------ --------------\s+[0-9]+\s+[0-9]+\s+[0-9]+.bat\+\s+[0-9]+"
+            r"\s+[0-9]+.ext\+\s+[0-9]+\s+[0-9]+.0\s+(?P<energy>[0-9]+)",
             str(slurm.stdout),
             "energy",
         )
